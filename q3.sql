@@ -10,11 +10,12 @@ SET @v6 = 'MGT';
 SET @v7 = 'EE';			  
 SET @v8 = 'MAT';
 
--- 1. List the name of the student with id equal to v1 (id).
+-- 3. List the names of students who have taken course v4 (crsCode).
+
 
 --  ********************************   ANSWER   ***********************************************
--- This one is good
+-- This has correlated subqueries, use derived tables instead?
+-- Use Union all instead of IN?
 --  ********************************   ANSWER   ***********************************************
 
-EXPLAIN ANALYZE
-SELECT name FROM Student WHERE id = @v1;
+SELECT name FROM Student WHERE id IN (SELECT studId FROM Transcript WHERE crsCode = @v4);
