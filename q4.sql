@@ -17,7 +17,7 @@ SET @v8 = 'MAT';
 -- need to force join order? (use blocking operator like a top)
 --  ********************************   ANSWER   ***********************************************
 
-
+EXPLAIN ANALYZE
 SELECT name FROM Student,
 	(SELECT studId FROM Transcript,
 		(SELECT crsCode, semester FROM Professor
@@ -25,3 +25,13 @@ SELECT name FROM Student,
 			WHERE Professor.name = @v5 AND Professor.id = Teaching.profId) as alias1
 	WHERE Transcript.crsCode = alias1.crsCode AND Transcript.semester = alias1.semester) as alias2
 WHERE Student.id = alias2.studId;
+
+
+-- ********************************************************MY MODIFICATIONS ********************************************
+
+WITH courses AS (
+	SELECT crsCode, semester 
+    FROM teaching
+    JOIN professor
+    WHERE name= @v5
+)
