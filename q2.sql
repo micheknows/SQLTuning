@@ -12,3 +12,10 @@ SET @v8 = 'MAT';
 
 -- 2. List the names of students with id in the range of v2 (id) to v3 (inclusive).
 SELECT name FROM Student WHERE id BETWEEN @v2 AND @v3;
+--   ABOVE WAS THE ORIGINAL  ---
+--  It does not work becase id is a varchar --
+
+--  BELOW IS BETTER
+--  The id is cast to a number so that the between works
+
+SELECT name FROM Student WHERE CAST(id AS UNSIGNED) BETWEEN @v2 AND @v3;
