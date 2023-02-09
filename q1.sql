@@ -11,10 +11,8 @@ SET @v7 = 'EE';
 SET @v8 = 'MAT';
 
 -- 1. List the name of the student with id equal to v1 (id).
+-- this seems to be already optimized.  It is straightforward, choosing the student with the given id
+-- an index was added to name on Student table and now
+-- this shows:  '-> Rows fetched before execution  (cost=0.00..0.00 rows=1) (actual time=0.000..0.000 rows=1 loops=1)\n'
 
---  ********************************   ANSWER   ***********************************************
--- This one is good
---  ********************************   ANSWER   ***********************************************
-
-EXPLAIN ANALYZE
 SELECT name FROM Student WHERE id = @v1;

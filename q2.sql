@@ -11,11 +11,11 @@ SET @v7 = 'EE';
 SET @v8 = 'MAT';
 
 -- 2. List the names of students with id in the range of v2 (id) to v3 (inclusive).
-SELECT name FROM Student WHERE id BETWEEN @v2 AND @v3;
---   ABOVE WAS THE ORIGINAL  ---
---  It does not work becase id is a varchar --
+-- at this point an index was also added on the id column so that the index is id, name
+-- before was
+-- '-> Filter: (student.id between <cache>((@v2)) and <cache>((@v3)))  (cost=5.44 rows=44) (actual time=0.963..2.586 rows=278 loops=1)\n    -> Table scan on Student  (cost=5.44 rows=400) (actual time=0.956..2.428 rows=400 loops=1)\n'
 
---  BELOW IS BETTER
---  The id is cast to a number so that the between works
+-- now this is 
+-- '-> Filter: (student.id between <cache>((@v2)) and <cache>((@v3)))  (cost=41.00 rows=278) (actual time=0.595..0.991 rows=278 loops=1)\n    -> Covering index scan on Student using idx_student_id_name  (cost=41.00 rows=400) (actual time=0.037..0.446 rows=400 loops=1)\n'
 
-SELECT name FROM Student WHERE CAST(id AS UNSIGNED) BETWEEN @v2 AND @v3;
+EXPLAIN ANALYZE SELECT name FROM Student WHERE id BETWEEN @v2 AND @v3;
